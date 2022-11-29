@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use  App\Models\User;
+use Illuminate\Console\View\Components\Alert as ComponentsAlert;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\Unique;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -27,7 +29,7 @@ class UserController extends Controller
 
     public function UserStore(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'email' => 'required|unique:users',
             'textNama' => 'required',
         ]);
@@ -38,9 +40,6 @@ class UserController extends Controller
         $data->password = bcrypt($request->password);
         $data->save();
 
-        $notification = array(
-            'message'
-        );
         return redirect()->route('user.view')->with('info', 'Tambah User Berhasil');
     }
 
@@ -61,7 +60,7 @@ class UserController extends Controller
         //     $data->password=bcrypt($request->password);
         // }
         $data->save();
-      
+
         return redirect()->route('user.view')->with('info', 'Update User Berhasil');
     }
     public function UserDelete($id)
